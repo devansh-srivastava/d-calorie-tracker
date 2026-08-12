@@ -1,0 +1,190 @@
+- generic [active] [ref=e1]:
+  - link "Skip to dashboard" [ref=e2] [cursor=pointer]:
+    - /url: "#dashboard"
+  - banner [ref=e4]:
+    - link "Apex Health dashboard" [ref=e5] [cursor=pointer]:
+      - /url: "#dashboard"
+      - generic [ref=e7]: APEX HEALTH
+    - navigation "Primary navigation" [ref=e8]:
+      - link "Overview" [ref=e9] [cursor=pointer]:
+        - /url: "#dashboard"
+      - link "Fuel" [ref=e10] [cursor=pointer]:
+        - /url: "#fuel"
+      - link "Training" [ref=e11] [cursor=pointer]:
+        - /url: "#training"
+      - link "Weight" [ref=e12] [cursor=pointer]:
+        - /url: "#weight"
+    - generic [ref=e13]:
+      - generic [ref=e14]: LOCAL MODE
+      - button "Open daily target settings" [ref=e16] [cursor=pointer]: SET
+  - main [ref=e17]:
+    - generic [ref=e18]:
+      - generic [ref=e19]:
+        - paragraph [ref=e20]: RACE DAY WEDNESDAY, 12 AUG
+        - heading [level=1] [ref=e21]:
+          - text: Stay insidethe
+          - emphasis [ref=e22]: window.
+        - paragraph [ref=e23]: Your personal pit wall for food, training, and bodyweight. Log the inputs. Read the trend. Keep moving.
+        - generic "Choose tracking date" [ref=e24]:
+          - button "Previous day" [ref=e25] [cursor=pointer]: Previous
+          - button "Today 12 Aug 2026" [ref=e26] [cursor=pointer]:
+            - generic [ref=e27]: Today
+            - generic [ref=e28]: 12 Aug 2026
+          - button "Next day" [ref=e29] [cursor=pointer]: Next
+      - complementary "DAILY READINESS" [ref=e30]:
+        - generic [ref=e31]:
+          - generic [ref=e32]: DAILY READINESS
+          - generic [ref=e33]: 0%
+        - generic [ref=e35]:
+          - strong [ref=e36]: "0"
+          - generic [ref=e37]: APEX SCORE
+        - generic [ref=e39]:
+          - generic [ref=e40]:
+            - generic [ref=e41]: FUEL
+            - strong [ref=e42]: "0"
+            - generic [ref=e43]: / 2,300 kcal
+          - generic [ref=e44]:
+            - generic [ref=e45]: BLOCKS
+            - strong [ref=e46]: "0"
+            - generic [ref=e47]: / 4 complete
+    - generic [ref=e48]:
+      - generic [ref=e49]:
+        - generic [ref=e50]: "01"
+        - paragraph [ref=e51]: FUEL TELEMETRY
+        - generic [ref=e53]: NO ENTRIES
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - paragraph [ref=e56]: DAILY INPUT
+          - heading [level=2] [ref=e57]:
+            - text: Fuel the
+            - emphasis [ref=e58]: stint.
+        - paragraph [ref=e59]: Track calories and macros against your targets. Every item is saved to the selected day only.
+      - generic [ref=e60]:
+        - article [ref=e61]:
+          - generic [ref=e62]:
+            - paragraph [ref=e63]: CALORIES REMAINING
+            - generic [ref=e64]: 0%
+          - strong [ref=e65]: 2,300
+          - text: kcal / target 2,300
+        - article [ref=e67]:
+          - generic [ref=e68]:
+            - paragraph [ref=e69]: PROTEIN
+            - generic [ref=e70]: 0%
+          - strong [ref=e71]: 0g
+          - text: target 150g
+        - article [ref=e73]:
+          - generic [ref=e74]:
+            - paragraph [ref=e75]: CARBS
+            - generic [ref=e76]: 0%
+          - strong [ref=e77]: 0g
+          - text: target 250g
+        - article [ref=e79]:
+          - generic [ref=e80]:
+            - paragraph [ref=e81]: FATS
+            - generic [ref=e82]: 0%
+          - strong [ref=e83]: 0g
+          - text: target 70g
+      - generic [ref=e85]:
+        - generic [ref=e86]:
+          - generic [ref=e87]:
+            - generic [ref=e88]: QUICK ENTRY
+            - generic [ref=e89]: Add one meal or snack
+          - generic [ref=e90]:
+            - text: Meal or food
+            - textbox "Meal or food" [ref=e91]:
+              - /placeholder: e.g. Eggs and toast
+          - generic [ref=e92]:
+            - text: Calories
+            - spinbutton "Calories" [ref=e93]
+          - generic [ref=e94]:
+            - text: Protein
+            - spinbutton "Protein" [ref=e95]
+          - generic [ref=e96]:
+            - text: Carbs
+            - spinbutton "Carbs" [ref=e97]
+          - generic [ref=e98]:
+            - text: Fats
+            - spinbutton "Fats" [ref=e99]
+          - alert [ref=e100]
+          - button "Log fuel" [ref=e101] [cursor=pointer]: Log fuel +
+        - generic [ref=e102]:
+          - generic [ref=e103]:
+            - generic [ref=e104]: SESSION LOG0 entries
+            - button "Clear meals" [ref=e105] [cursor=pointer]
+          - paragraph [ref=e107]: No fuel logged for this day. Add your first meal above.
+    - generic [ref=e108]:
+      - generic [ref=e109]:
+        - generic [ref=e110]: "02"
+        - paragraph [ref=e111]: TRAINING PROGRAM
+        - generic [ref=e113]: 0 / 4 COMPLETE
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - paragraph [ref=e116]: RUN SHEET
+          - heading [level=2] [ref=e117]:
+            - text: Build the
+            - emphasis [ref=e118]: pace.
+        - paragraph [ref=e119]: Check off each block when you finish it. Training is stored separately for every day.
+      - generic [ref=e120]:
+        - article [ref=e121]:
+          - generic [ref=e122]:
+            - checkbox "Mark Upper body strength complete" [ref=e123]
+            - generic [ref=e125]: "01"
+            - generic [ref=e126]: Upper body strength
+          - generic [ref=e127]: 4 sets x 8-12 reps
+          - generic [ref=e128]: STRENGTH
+        - article [ref=e129]:
+          - generic [ref=e130]:
+            - checkbox "Mark Zone 2 cardio complete" [ref=e131]
+            - generic [ref=e133]: "02"
+            - generic [ref=e134]: Zone 2 cardio
+          - generic [ref=e135]: 30 minutes / easy pace
+          - generic [ref=e136]: CARDIO
+        - article [ref=e137]:
+          - generic [ref=e138]:
+            - checkbox "Mark Core circuit complete" [ref=e139]
+            - generic [ref=e141]: "03"
+            - generic [ref=e142]: Core circuit
+          - generic [ref=e143]: 3 rounds x 4 movements
+          - generic [ref=e144]: STABILITY
+        - article [ref=e145]:
+          - generic [ref=e146]:
+            - checkbox "Mark Mobility reset complete" [ref=e147]
+            - generic [ref=e149]: "04"
+            - generic [ref=e150]: Mobility reset
+          - generic [ref=e151]: 10 minutes / full body
+          - generic [ref=e152]: RECOVERY
+    - generic [ref=e153]:
+      - generic [ref=e154]:
+        - generic [ref=e155]: "03"
+        - paragraph [ref=e156]: BODYWEIGHT TELEMETRY
+        - generic [ref=e158]: ROLLING 7 READINGS
+      - generic [ref=e159]:
+        - generic [ref=e160]:
+          - paragraph [ref=e161]: LATEST READING
+          - strong [ref=e162]: "--kg"
+          - paragraph [ref=e163]: Log a weigh-in to start the trace.
+          - generic [ref=e164]:
+            - generic [ref=e165]:
+              - text: Weight for selected date
+              - spinbutton "Weight for selected date" [ref=e166]
+            - alert [ref=e167]
+            - button "Log weight" [ref=e168] [cursor=pointer]: Log weight +
+        - generic [ref=e169]:
+          - generic [ref=e170]:
+            - generic [ref=e171]: WEIGHT TRACE
+            - strong [ref=e172]: "--"
+          - img "Recent bodyweight trend" [ref=e173]:
+            - generic [ref=e174]: AWAITING TELEMETRY
+          - generic [ref=e175]:
+            - generic [ref=e176]: EARLIER
+            - generic [ref=e177]: LATEST
+        - complementary [ref=e178]:
+          - generic [ref=e179]:
+            - generic [ref=e180]: RECENT READINGSLatest first
+            - button "Clear weights" [ref=e181] [cursor=pointer]
+          - paragraph [ref=e183]: No bodyweight readings yet.
+  - contentinfo [ref=e184]:
+    - generic [ref=e185]: APEX HEALTH / PERSONAL PERFORMANCE LOG
+    - button "Reset selected day" [ref=e186] [cursor=pointer]
+    - generic [ref=e187]: "DATA MODE: THIS DEVICE"
+  - status [ref=e189]

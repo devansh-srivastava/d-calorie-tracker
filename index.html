@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0d10" />
+    <meta name="description" content="A private F1-inspired dashboard for daily nutrition, training, and bodyweight tracking." />
+    <title>Apex Health | Personal performance tracker</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230b0d10'/%3E%3Cpath d='M12 45 29 16h24L37 45h-9l12-20h-9L21 45Z' fill='%23ff3545'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#dashboard">Skip to dashboard</a>
+    <div class="ambient-grid" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="brand" href="#dashboard" aria-label="Apex Health dashboard">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span><b>APEX</b> HEALTH</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a class="active" href="#dashboard">Overview</a>
+        <a href="#fuel">Fuel</a>
+        <a href="#training">Training</a>
+        <a href="#weight">Weight</a>
+      </nav>
+      <div class="topbar-actions">
+        <span class="status" id="connectionStatus"><i aria-hidden="true"></i> LOCAL MODE</span>
+        <button class="icon-button" id="settingsButton" type="button" aria-label="Open daily target settings">
+          <span aria-hidden="true">SET</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="dashboard">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">RACE DAY <span id="todayLabel"></span></p>
+          <h1>Stay inside<br />the <em>window.</em></h1>
+          <p class="lede">Your personal pit wall for food, training, and bodyweight. Log the inputs. Read the trend. Keep moving.</p>
+          <div class="date-control" aria-label="Choose tracking date">
+            <button id="previousDay" type="button" aria-label="Previous day">Previous</button>
+            <button id="jumpToday" class="date-display" type="button"><span id="selectedDateLabel">Today</span><small id="selectedDateLong"></small></button>
+            <button id="nextDay" type="button" aria-label="Next day">Next</button>
+          </div>
+        </div>
+
+        <aside class="race-card" aria-labelledby="readiness-title">
+          <div class="race-card-head"><span id="readiness-title">DAILY READINESS</span><b id="completion">0%</b></div>
+          <div class="lap-ring" id="lapRing" aria-hidden="true"><div><strong id="lapScore">0</strong><small>APEX SCORE</small></div></div>
+          <div class="progress"><i id="progressBar"></i></div>
+          <div class="race-stats">
+            <div><small>FUEL</small><strong id="caloriesTotal">0</strong><span id="calorieRaceTarget">/ 2,300 kcal</span></div>
+            <div><small>BLOCKS</small><strong id="workoutsTotal">0</strong><span id="workoutRaceTarget">/ 4 complete</span></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section-shell telemetry" id="fuel">
+        <div class="section-kicker"><span>01</span><p>FUEL TELEMETRY</p><i></i><small id="fuelStatus">NO ENTRIES</small></div>
+        <div class="section-heading">
+          <div><p class="eyebrow">DAILY INPUT</p><h2>Fuel the <em>stint.</em></h2></div>
+          <p>Track calories and macros against your targets. Every item is saved to the selected day only.</p>
+        </div>
+
+        <div class="fuel-grid">
+          <article class="metric primary"><div class="metric-top"><p>CALORIES REMAINING</p><span id="caloriePercent">0%</span></div><strong id="remaining">2,300</strong><small id="calorieTargetLabel">kcal / target 2,300</small><div class="meter"><i id="calorieMeter"></i></div></article>
+          <article class="metric"><div class="metric-top"><p>PROTEIN</p><span id="proteinPercent">0%</span></div><strong id="protein">0<span>g</span></strong><small id="proteinTargetLabel">target 150g</small><div class="meter"><i id="proteinMeter"></i></div></article>
+          <article class="metric"><div class="metric-top"><p>CARBS</p><span id="carbsPercent">0%</span></div><strong id="carbs">0<span>g</span></strong><small id="carbsTargetLabel">target 250g</small><div class="meter"><i id="carbsMeter"></i></div></article>
+          <article class="metric"><div class="metric-top"><p>FATS</p><span id="fatsPercent">0%</span></div><strong id="fats">0<span>g</span></strong><small id="fatsTargetLabel">target 70g</small><div class="meter"><i id="fatsMeter"></i></div></article>
+        </div>
+
+        <div class="fuel-entry-layout">
+          <form class="fuel-form" id="fuelForm" novalidate>
+            <div class="form-title"><span>QUICK ENTRY</span><small>Add one meal or snack</small></div>
+            <label class="wide-field">Meal or food<input required name="meal" maxlength="60" autocomplete="off" placeholder="e.g. Eggs and toast" /></label>
+            <label>Calories<input required name="calories" type="number" min="0" max="10000" step="1" inputmode="decimal" placeholder="kcal" /></label>
+            <label>Protein<input name="protein" type="number" min="0" max="1000" step="0.1" inputmode="decimal" placeholder="grams" /></label>
+            <label>Carbs<input name="carbs" type="number" min="0" max="1000" step="0.1" inputmode="decimal" placeholder="grams" /></label>
+            <label>Fats<input name="fats" type="number" min="0" max="1000" step="0.1" inputmode="decimal" placeholder="grams" /></label>
+            <p class="form-error" id="fuelError" role="alert"></p>
+            <button class="primary-button" type="submit">Log fuel <b aria-hidden="true">+</b></button>
+          </form>
+
+          <div class="log-panel">
+            <div class="log-panel-head"><div><span>SESSION LOG</span><small id="mealCount">0 entries</small></div><button id="clearMeals" class="text-button" type="button">Clear meals</button></div>
+            <div class="meal-list" id="mealList"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-shell training-section" id="training">
+        <div class="section-kicker"><span>02</span><p>TRAINING PROGRAM</p><i></i><small id="trainingStatus">0 / 4 COMPLETE</small></div>
+        <div class="section-heading"><div><p class="eyebrow">RUN SHEET</p><h2>Build the <em>pace.</em></h2></div><p>Check off each block when you finish it. Training is stored separately for every day.</p></div>
+        <div class="exercise-list" id="exerciseList"></div>
+      </section>
+
+      <section class="section-shell weight-section" id="weight">
+        <div class="section-kicker"><span>03</span><p>BODYWEIGHT TELEMETRY</p><i></i><small>ROLLING 7 READINGS</small></div>
+        <div class="weight-layout">
+          <div class="weight-reading"><p class="eyebrow">LATEST READING</p><strong class="weight-value" id="currentWeight">--<small>kg</small></strong><p class="weight-note" id="weightNote">Log a weigh-in to start the trace.</p><form id="weightForm" novalidate><label>Weight for selected date<input required type="number" min="25" max="300" step="0.1" inputmode="decimal" name="weight" placeholder="00.0 kg" /></label><p class="form-error" id="weightError" role="alert"></p><button class="primary-button" type="submit">Log weight <b aria-hidden="true">+</b></button></form></div>
+          <div class="chart-wrap"><div class="chart-title"><span>WEIGHT TRACE</span><strong id="weightChange">--</strong></div><svg id="weightChart" viewBox="0 0 640 220" role="img" aria-label="Recent bodyweight trend"></svg><div class="axis"><span id="chartStart">EARLIER</span><span id="chartEnd">LATEST</span></div></div>
+          <aside class="weight-history"><div class="log-panel-head"><div><span>RECENT READINGS</span><small>Latest first</small></div><button id="clearWeight" class="text-button" type="button">Clear weights</button></div><div id="weightList"></div></aside>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>APEX HEALTH / PERSONAL PERFORMANCE LOG</span><button id="resetDay" type="button">Reset selected day</button><span id="dataMode">DATA MODE: THIS DEVICE <b aria-hidden="true"></b></span></footer>
+
+    <dialog id="settingsDialog" aria-labelledby="settingsTitle">
+      <form id="settingsForm" novalidate>
+        <div class="dialog-head"><div><p class="eyebrow">CAR SETUP</p><h2 id="settingsTitle">Daily targets.</h2></div><button class="icon-button" id="closeSettings" aria-label="Close settings" type="button">Close</button></div>
+        <p class="dialog-copy">These targets change only the progress calculations on this device.</p>
+        <div class="settings-grid"><label>Calories<input required name="calories" type="number" min="500" max="10000" /></label><label>Protein (g)<input required name="protein" type="number" min="1" max="1000" /></label><label>Carbs (g)<input required name="carbs" type="number" min="1" max="1000" /></label><label>Fats (g)<input required name="fats" type="number" min="1" max="1000" /></label></div>
+        <p class="form-error" id="settingsError" role="alert"></p><div class="dialog-actions"><button class="text-button" id="cancelSettings" type="button">Cancel</button><button class="primary-button" type="submit">Save targets <b aria-hidden="true">+</b></button></div>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
