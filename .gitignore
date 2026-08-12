@@ -1,3 +1,4 @@
 config.js
 outputs/
 node_modules/
+.playwright-mcp/
