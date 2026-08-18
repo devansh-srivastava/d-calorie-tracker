@@ -1,9 +1,9 @@
 /**
- * Apex Health Google Apps Script API.
- * Bind this script to the tracker Sheet, set SCRIPT_SECRET in Script Properties,
- * deploy as a web app, then put its /exec URL in config.js.
+ * D-calorie tracker Google Apps Script API.
+ * Set SPREADSHEET_ID and SCRIPT_SECRET in Script Properties, deploy as a web
+ * app, then put the /exec URL and secret in the site's local config.js.
  */
-const TAB = { meals: 'Daily Log', exercises: 'Exercise Plan', weights: 'Weight Log', settings: 'Settings' };
+const TAB = { tracker: 'Calorie Tracker' };
 
 function doGet(e) {
   try {
@@ -17,11 +17,7 @@ function doPost(e) {
   try {
     const body = JSON.parse(e?.postData?.contents || '{}');
     assertSecret_(body.secret);
-    if (body.action === 'meal') appendMeal_(body);
-    else if (body.action === 'exercise') updateExercise_(body);
-    else if (body.action === 'weight') appendWeight_(body);
-    else throw new Error('Unsupported POST action.');
-    return json_({ ok: true, dashboard: dashboard_() });
+    throw new Error('This dashboard is read-only. Update entries in the Google Sheet.');
   } catch (error) { return json_({ ok: false, error: error.message }); }
 }
 
@@ -29,23 +25,30 @@ function assertSecret_(secret) {
   const expected = PropertiesService.getScriptProperties().getProperty('SCRIPT_SECRET');
   if (!expected || secret !== expected) throw new Error('Unauthorized.');
 }
-function sheet_(name) { return SpreadsheetApp.getActive().getSheetByName(name); }
-function iso_(value) { return Utilities.formatDate(new Date(value), Session.getScriptTimeZone(), 'yyyy-MM-dd'); }
+function book_() {
+  const id = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+  if (!id) throw new Error('Missing SPREADSHEET_ID script property.');
+  return SpreadsheetApp.openById(id);
+}
+function iso_(value) {
+  if (value instanceof Date) return Utilities.formatDate(value, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) throw new Error(`Invalid tracker date: ${value}`);
+  return Utilities.formatDate(parsed, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+}
 function json_(value) { return ContentService.createTextOutput(JSON.stringify(value)).setMimeType(ContentService.MimeType.JSON); }
 
 function dashboard_() {
-  const book = SpreadsheetApp.getActive();
-  const daily = sheet_(TAB.meals).getDataRange().getValues().slice(4).filter(r => r[0] && r[1]);
-  const exercise = sheet_(TAB.exercises).getDataRange().getValues().slice(4).filter(r => r[1]);
-  const weights = sheet_(TAB.weights).getDataRange().getValues().slice(4).filter(r => r[0] && r[1] !== '');
-  const settingRows = sheet_(TAB.settings).getDataRange().getValues().slice(4, 8);
-  const settings = { calories: Number(settingRows[0]?.[1]) || 2300, protein: Number(settingRows[1]?.[1]) || 150, carbs: Number(settingRows[2]?.[1]) || 250, fats: Number(settingRows[3]?.[1]) || 70 };
-  return { ok: true, settings, meals: daily.map(r => ({ date: iso_(r[0]), id: String(r[7] || ''), name: String(r[1]), calories: Number(r[2]) || 0, protein: Number(r[3]) || 0, carbs: Number(r[4]) || 0, fats: Number(r[5]) || 0 })), exercises: exercise.map(r => ({ date: iso_(r[0] || new Date()), name: String(r[1]), completed: Boolean(r[4]), type: String(r[3] || ''), meta: String(r[2] || '') })), weights: weights.map(r => ({ date: iso_(r[0]), value: Number(r[1]) || 0 })) };
-}
-function appendMeal_(b) { sheet_(TAB.meals).appendRow([b.date || iso_(new Date()), b.meal, Number(b.calories), Number(b.protein) || 0, Number(b.carbs) || 0, Number(b.fats) || 0, b.notes || 'Dashboard entry', 'WEB-' + Date.now()]); }
-function appendWeight_(b) { sheet_(TAB.weights).appendRow([b.date || iso_(new Date()), Number(b.weight), b.notes || 'Dashboard entry', '']); }
-function updateExercise_(b) {
-  const sh = sheet_(TAB.exercises); const rows = sh.getDataRange().getValues();
-  for (let i = 4; i < rows.length; i++) if (String(rows[i][1]).trim() === String(b.exercise).trim()) { sh.getRange(i + 1, 5).setValue(Boolean(b.completed)); sh.getRange(i + 1, 6).setValue(b.completed ? new Date() : ''); return; }
-  throw new Error('Exercise not found in Exercise Plan.');
+  const rows = book_().getSheetByName(TAB.tracker).getDataRange().getValues().slice(1).filter(row => row[0]);
+  const meals = [], weights = [];
+  let calorieTarget = 2300;
+  rows.forEach((row) => {
+    const date = iso_(row[0]);
+    const calories = Number(row[4]) || 0;
+    const target = Number(row[10]) || 0;
+    if (target) calorieTarget = target;
+    if (calories) meals.push({ date, id: `TRACKER-${date}`, name: 'Daily total', calories, protein: 0, carbs: 0, fats: 0 });
+    if (row[5] !== '' && row[5] != null) weights.push({ date, value: Number(row[5]) || 0 });
+  });
+  return { ok: true, settings: { calories: calorieTarget, protein: 150, carbs: 250, fats: 70 }, meals, weights, exercises: [] };
 }
